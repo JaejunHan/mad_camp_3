@@ -3,15 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/mad_camp_3/reappearance01/app/src/main/res/drawable/ic_baseline_my_location_24.xml" value="0.1935" />
-        <entry key="..\:/mad_camp_3/reappearance01/app/src/main/res/layout/activity_main.xml" value="0.3625" />
-        <entry key="..\:/mad_camp_3/reappearance01/app/src/main/res/layout/activity_map.xml" value="0.184375" />
-        <entry key="..\:/mad_camp_3/reappearance01/app/src/main/res/layout/activity_profile.xml" value="0.18541666666666667" />
-        <entry key="..\:/mad_camp_3/reappearance01/app/src/main/res/layout/activity_search_from.xml" value="0.184375" />
-        <entry key="..\:/mad_camp_3/reappearance01/app/src/main/res/layout/activity_searchfrom.xml" value="0.184375" />
-        <entry key="..\:/mad_camp_3/reappearance01/app/src/main/res/layout/activity_superkotlin.xml" value="0.3614583333333333" />
-        <entry key="..\:/mad_camp_3/reappearance01/app/src/main/res/layout/viewholder_search_result_item.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/layout/activity_main.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/layout/activity_map.xml" value="0.41032608695652173" />
         <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/layout/activity_result.xml" value="0.26197916666666665" />
       </map>
     </option>
