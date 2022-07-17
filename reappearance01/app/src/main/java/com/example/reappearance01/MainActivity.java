@@ -36,11 +36,31 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> activityResultLauncher;
     ActivityMainBinding binding;
     ImageButton search;
+    SearchResultEntity searchFromResult;
+    SearchResultEntity searchToResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
-        
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("SearchFromData")) {
+            searchFromResult = intent.getParcelableExtra("SearchFromData");
+            binding.fromPlaceText.setText(searchFromResult.getName());
+            ((GlobalSearchResult)getApplication()).setFromName(searchFromResult.getName());
+            ((GlobalSearchResult)getApplication()).setFromFullAddress(searchFromResult.getFullAddress());
+            ((GlobalSearchResult)getApplication()).setFromLocation(searchFromResult.getLocationLatLng());
+        }
+        if (intent.hasExtra("SearchToData")) {
+            searchToResult = intent.getParcelableExtra("SearchToData");
+            binding.toPlaceText.setText(searchToResult.getName());
+            ((GlobalSearchResult)getApplication()).setToName(searchToResult.getName());
+            ((GlobalSearchResult)getApplication()).setToFullAddress(searchToResult.getFullAddress());
+            ((GlobalSearchResult)getApplication()).setToLocation(searchToResult.getLocationLatLng());
+        }
+        binding.fromPlaceText.setText(((GlobalSearchResult)getApplication()).getFromName());
+        binding.toPlaceText.setText(((GlobalSearchResult)getApplication()).getToName());
+
         init();
         
         search = (ImageButton) findViewById(R.id.search_result);
@@ -51,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // intent로 다른 화면 띄위게 해주면 됨
                 Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+                intent.putExtra("FromLatLng", ((GlobalSearchResult)getApplication()).getFromLocation());
+                intent.putExtra("FromName", ((GlobalSearchResult)getApplication()).getFromName());
+                intent.putExtra("ToLatLng", ((GlobalSearchResult)getApplication()).getToLocation());
+                intent.putExtra("ToName", ((GlobalSearchResult)getApplication()).getToName());
                 startActivity(intent);
             }
         });
@@ -61,10 +85,8 @@ public class MainActivity extends AppCompatActivity {
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == 9001) {
                 Intent intent = result.getData();
-                String name = intent.getStringExtra("apple");
-                Integer number = intent.getIntExtra("number",  0);
-                Toast.makeText(getApplicationContext(), "fuck", Toast.LENGTH_SHORT).show();
-                binding.textView4.setText(name);
+
+                binding.textView4.setText("hey");
 
             }
         });
@@ -72,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
         binding.fromPlaceText.setOnClickListener(v -> {
             Toast.makeText(this,"hey",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), SuperKotlinActivity.class);
+            activityResultLauncher.launch(intent);
+        });
+
+        binding.toPlaceText.setOnClickListener(v -> {
+            Toast.makeText(this,"hey",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), SearchToActivity.class);
             activityResultLauncher.launch(intent);
         });
 

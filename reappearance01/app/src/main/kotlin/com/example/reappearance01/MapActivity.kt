@@ -3,6 +3,7 @@ package com.example.reappearance01
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -66,10 +67,29 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CoroutineScope {
                 searchResult = it.getParcelableExtra<SearchResultEntity>(SEARCH_RESULT_EXTRA_KEY)
                     ?: throw Exception("데이터가 존재하지 않습니다.")
                 setupGoogleMap()
+                binding.textView.text = searchResult.name;
+                binding.textView2.text = searchResult.fullAddress;
             }
+        }
+        binding.returnFromResultButton.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java).apply{
+                putExtra("SearchFromData",searchResult)
+            }
+            //mGlobalSearchResult = GlobalSearchResult().getContext()
+
+            setResult(9001, intent)
+            //if (!isFinishing) finish()
+            startActivity(intent)
+        }
+        binding.returnToResultButton.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java).apply{
+                putExtra("SearchToData",searchResult)
+            }
+            startActivity(intent)
         }
 
         bindViews()
+
     }
 
     private fun bindViews() = with(binding) {

@@ -1,5 +1,6 @@
 package com.example.reappearance01;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,15 +35,22 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
+        Intent intent = getIntent();
+        LocationLatLngEntity fromLatLng = intent.getParcelableExtra("FromLatLng");
+        LocationLatLngEntity toLatLng = intent.getParcelableExtra("ToLatLng");
+        String fromName = intent.getStringExtra("FromName");
+        String toName = intent.getStringExtra("ToName");
         // 서버와 통신하는 부분
         // 일단 위도, 경도를 하드코딩해둠.
-        request("126.8966655", "37.4830969", "출발지이름", "127.0276368", "37.4979502", "도착지이름");
-
+        String latitude_from = Float.toString(fromLatLng.getLatitude());
+        String longitude_from = Float.toString(fromLatLng.getLongitude());
+        String latitude_to = Float.toString(toLatLng.getLatitude());
+        String longitude_to = Float.toString(toLatLng.getLongitude());
+        request(latitude_from, longitude_from, fromName, latitude_to, longitude_to, toName);
     }
     public void request(String latitude_from, String longitude_from, String start, String latitude_to, String longitude_to, String end){
         //url 요청주소 넣는 editText를 받아 url만들기
         String url = localhost + "/path_find";
-
         //JSON형식으로 데이터 통신을 진행합니다!
         JSONObject testjson = new JSONObject();
         try {

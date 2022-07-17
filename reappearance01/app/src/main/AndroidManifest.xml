@@ -8,6 +8,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".GlobalSearchResult"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -36,6 +37,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key"/>
         <activity android:name=".ResultActivity" />
+        <activity android:name=".SearchToActivity" />
 
     </application>
 
