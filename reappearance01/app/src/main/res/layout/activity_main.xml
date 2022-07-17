@@ -33,22 +33,26 @@
 
         <TextView
             android:id="@+id/fromPlaceText"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="#BDBDBD"
+            android:layout_width="280dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="#F1F1F1"
             android:text="TextView"
+            android:textAlignment="viewStart"
+            android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/toPlaceText"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#BDBDBD"
+            android:layout_width="280dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="7dp"
+            android:background="#F1F1F1"
             android:text="TextView"
+            android:textAlignment="viewStart"
+            android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fromPlaceText" />
