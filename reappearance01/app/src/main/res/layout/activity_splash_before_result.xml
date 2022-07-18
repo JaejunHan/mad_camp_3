@@ -8,10 +8,10 @@
     tools:context=".MainActivity">
 
     <VideoView
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:id="@+id/video_splash"
         android:layout_width="match_parent"
-        android:layout_height="210dp">
+        android:layout_height="400dp">
     </VideoView>
 
     <TextView
