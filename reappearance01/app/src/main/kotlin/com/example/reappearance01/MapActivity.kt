@@ -38,6 +38,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CoroutineScope {
         get() = Dispatchers.Main + job
 
 
+
     private lateinit var binding: ActivityMapBinding
     private lateinit var map: GoogleMap
     private var currentSelectMarker: Marker? = null

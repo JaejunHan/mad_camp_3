@@ -1,12 +1,22 @@
 package com.example.reappearance01
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +41,11 @@ class SearchToActivity: AppCompatActivity(), CoroutineScope {
 
     private lateinit var job: Job
 
+    private lateinit var locationManager: LocationManager
+    private lateinit var tLocationListener: TLocationListener
+    private lateinit var locFinalLatLng: LocationLatLngEntity
+    private var locFinalName: String = ""
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
@@ -52,6 +67,158 @@ class SearchToActivity: AppCompatActivity(), CoroutineScope {
         initViews()
         bindViews()
         initData()
+        binding.selectFromMapButton.setOnClickListener{
+            val intent = Intent(this, SelectFromMapActivity::class.java)
+            startActivity(intent)
+        }
+        binding.myLocationButton.setOnClickListener{
+            getMyLocation()
+
+        }
+    }
+    private fun getMyLocation() {
+        // 위치 매니저 초기화
+        if (::locationManager.isInitialized.not()) {
+            locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        }
+
+        // GPS 이용 가능한지
+        val isGpsEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        // 권한 얻기
+        if (isGpsEnable) {
+            when {
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) && shouldShowRequestPermissionRationale(
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) -> {
+                    showPermissionContextPop()
+                }
+
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED -> {
+                    makeRequestAsync()
+                }
+
+                else -> {
+                    settLocationListener()
+                }
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun settLocationListener() {
+        val minTime = 3000L // 현재 위치를 불러오는데 기다릴 최소 시간
+        val minDistance = 100f // 최소 거리 허용
+
+        // 로케이션 리스너 초기화
+        if (::tLocationListener.isInitialized.not()) {
+            tLocationListener = TLocationListener()
+        }
+
+        // 현재 위치 업데이트 요청
+        with(locationManager) {
+            requestLocationUpdates(
+                android.location.LocationManager.GPS_PROVIDER,
+                minTime,
+                minDistance,
+                tLocationListener
+            )
+            requestLocationUpdates(
+                android.location.LocationManager.NETWORK_PROVIDER,
+                minTime,
+                minDistance,
+                tLocationListener
+            )
+        }
+    }
+
+    private fun showPermissionContextPop() {
+        AlertDialog.Builder(this)
+            .setTitle("권한이 필요합니다.")
+            .setMessage("내 위치를 불러오기위해 권한이 필요합니다.")
+            .setPositiveButton("동의") { _, _ ->
+                makeRequestAsync()
+            }
+            .create()
+            .show()
+    }
+    private fun makeRequestAsync() {
+        // 퍼미션 요청 작업. 아래 작업은 비동기로 이루어짐
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            SelectFromMapActivity.PERMISSION_REQUEST_CODE
+        )
+    }
+    inner class TLocationListener : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            // 현재 위치 콜백
+            val locationLatLngEntity = LocationLatLngEntity(
+                location.latitude.toFloat(),
+                location.longitude.toFloat()
+            )
+
+            onCurrentLocationChanged(locationLatLngEntity)
+        }
+
+    }
+    private fun onCurrentLocationChanged(locationLatLngEntity: LocationLatLngEntity) {
+        launch(coroutineContext) {
+            try {
+                binding.progressCircular.isVisible = true
+
+                // IO 스레드에서 위치 정보를 받아옴
+                withContext(Dispatchers.IO) {
+                    val response = RetrofitUtil.apiService.getReverseGeoCode(
+                        lat = locationLatLngEntity.latitude.toDouble(),
+                        lon = locationLatLngEntity.longitude.toDouble()
+                    )
+                    if (response.isSuccessful) {
+                        val body = response.body()
+
+                        // 응답 성공한 경우 UI 스레드에서 처리
+                        withContext(Dispatchers.Main) {
+                            Log.e("list", body.toString())
+                            body?.let {
+                                // 마커 보여주기
+                                locFinalLatLng = locationLatLngEntity
+                                locFinalName = it.addressInfo.fullAddress ?: "여전히 없음"
+                                Log.d(ContentValues.TAG, "옛다 locfinalname 봐라"+locFinalName)
+                                Log.d(ContentValues.TAG, "옛다 finallatlng latitude 봐라"+locFinalLatLng.latitude.toString())
+                                val intent = Intent(applicationContext, MainActivity::class.java).apply{
+                                    putExtra("SearchToData",SearchResultEntity(locFinalName,locFinalName,locFinalLatLng))
+                                }
+                                //mGlobalSearchResult = GlobalSearchResult().getContext()
+
+                                setResult(9001, intent)
+                                //if (!isFinishing) finish()
+                                startActivity(intent)
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@SearchToActivity, "검색하는 과정에서 에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            } finally {
+                binding.progressCircular.isVisible = false
+            }
+        }
+        removeLocationListener()// 위치 불러온 경우 더이상 리스너가 필요 없으므로 제거
+    }
+    private fun removeLocationListener() {
+        if (::locationManager.isInitialized && ::tLocationListener.isInitialized) {
+            locationManager.removeUpdates(tLocationListener) // tLocationListener 를 업데이트 대상에서 지워줌
+        }
     }
 
     private fun initAdapter() {

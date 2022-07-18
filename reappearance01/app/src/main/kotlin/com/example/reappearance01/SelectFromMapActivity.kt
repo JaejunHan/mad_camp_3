@@ -81,17 +81,16 @@ class SelectFromMapActivity : AppCompatActivity(), OnMapReadyCallback, Coroutine
         */
         binding.returnFromResultButton.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java).apply{
-                putExtra("SearchFromData",searchResult)
+                putExtra("SearchFromData",SearchResultEntity(locFinalName,locFinalName,locFinalLatLng))
             }
             //mGlobalSearchResult = GlobalSearchResult().getContext()
-
             setResult(9001, intent)
             //if (!isFinishing) finish()
             startActivity(intent)
         }
         binding.returnToResultButton.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java).apply{
-                putExtra("SearchToData",searchResult)
+                putExtra("SearchToData",SearchResultEntity(locFinalName,locFinalName,locFinalLatLng))
             }
             startActivity(intent)
         }
