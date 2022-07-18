@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +40,10 @@ public class ResultActivity extends AppCompatActivity {
     private String type = "";
     private String localhost = "https://72f7-210-222-224-106.jp.ngrok.io";
     private double walking_speed = 1.0f;
+
+    SeekBar seekBar;
+    TextView speed_textview;
+    ImageButton speed_button;
     LinearLayout kind_of_transport;
     ResultAdapter resultAdapter;
 
@@ -47,6 +53,10 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         kind_of_transport = (LinearLayout) findViewById(R.id.kind_of_transport);
         listView = (ListView) findViewById(R.id.result_list_view);
+        speed_button = (ImageButton) findViewById(R.id.rum_button);
+        speed_textview = (TextView) findViewById(R.id.speed);
+        seekBar = findViewById(R.id.seekBar);
+
 
         Intent intent = getIntent();
         LocationLatLngEntity fromLatLng = intent.getParcelableExtra("FromLatLng");
@@ -69,6 +79,29 @@ public class ResultActivity extends AppCompatActivity {
         listView.setAdapter(resultAdapter);
         resultAdapter.notifyDataSetChanged();
         */
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                speed_textview.setText(String.format("달리기 x%.1f", seekBar.getProgress() / 10.0));
+                System.out.println(walking_speed);
+                System.out.println("애애애앵애애");
+                walking_speed = seekBar.getProgress() / 10.0;
+                try {
+                    show_calculated_results(walking_speed);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
     public void request(String latitude_from, String longitude_from, String start, String latitude_to, String longitude_to, String end){
         //url 요청주소 넣는 editText를 받아 url만들기
@@ -151,7 +184,7 @@ public class ResultActivity extends AppCompatActivity {
         SimpleDateFormat minute = new SimpleDateFormat("mm");
         String minute_str = minute.format(date);
 
-
+        final_json_array = new JSONArray(); // 초기화
         int what_hour = 0;  // 이 값이 0이면 현재 hour, 1이면 현재시간 +1, 2이면 현재시간 +2
         for (int i = 0; i < server_results.length(); i++){   // 각각의 경로에 따라
             double time_spent = 0.0f;
