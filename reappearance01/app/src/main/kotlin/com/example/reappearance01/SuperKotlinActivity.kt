@@ -23,6 +23,7 @@ import com.example.reappearance01.Pois
 import com.example.reappearance01.LocationLatLngEntity
 import com.example.reappearance01.SearchResultEntity
 import com.example.reappearance01.RetrofitUtil
+import kotlinx.android.synthetic.main.activity_superkotlin.view.*
 
 class SuperKotlinActivity: AppCompatActivity(), CoroutineScope {
 
@@ -52,6 +53,10 @@ class SuperKotlinActivity: AppCompatActivity(), CoroutineScope {
         initViews()
         bindViews()
         initData()
+        binding.selectFromMapButton.setOnClickListener{
+            val intent = Intent(this, SelectFromMapActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initAdapter() {
