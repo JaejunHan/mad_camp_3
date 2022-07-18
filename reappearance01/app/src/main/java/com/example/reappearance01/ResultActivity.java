@@ -1,6 +1,13 @@
 package com.example.reappearance01;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,21 +30,29 @@ import java.util.Date;
 
 public class ResultActivity extends AppCompatActivity {
 
+    public ListView listView;
     private JSONArray server_results = new JSONArray();     // 서버와 통신 후 막 받을 데이터
     private JSONArray final_json_array = new JSONArray();   //
     private JSONArray final_json_array_element = new JSONArray();   // 화면에 띄울 각각의 아이템
     private String type = "";
-    private String localhost = "https://68cd-210-222-224-106.jp.ngrok.io";
+    private String localhost = "https://72f7-210-222-224-106.jp.ngrok.io";
     private double walking_speed = 1.0f;
+    LinearLayout kind_of_transport;
+    ResultAdapter resultAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+        kind_of_transport = (LinearLayout) findViewById(R.id.kind_of_transport);
+        listView = (ListView) findViewById(R.id.result_list_view);
 
         // 서버와 통신하는 부분
         // 일단 위도, 경도를 하드코딩해둠.
         request("126.8966655", "37.4830969", "출발지이름", "127.0276368", "37.4979502", "도착지이름");
-
+        resultAdapter = new ResultAdapter(getApplicationContext(), final_json_array);
+        listView.setAdapter(resultAdapter);
+        resultAdapter.notifyDataSetChanged();
     }
     public void request(String latitude_from, String longitude_from, String start, String latitude_to, String longitude_to, String end){
         //url 요청주소 넣는 editText를 받아 url만들기
@@ -123,9 +138,10 @@ public class ResultActivity extends AppCompatActivity {
 
 
         int what_hour = 0;  // 이 값이 0이면 현재 hour, 1이면 현재시간 +1, 2이면 현재시간 +2
-        double time_spent = 0.0f;
         for (int i = 0; i < server_results.length(); i++){   // 각각의 경로에 따라
+            double time_spent = 0.0f;
             final_json_array_element = new JSONArray();  // 초기화
+            int is_route_calculateable = 1; // 계산 가능한 경로인지(버싀의 경우 배차간격이 제공이 안되면 그 루트 제외시킴.)
             JSONArray each_path_result = new JSONArray(server_results.get(i).toString());
             for (int j=0; j < each_path_result.length(); j++){  // 각각의 교통수단에 따라
                 JSONObject json_object = new JSONObject(each_path_result.get(j).toString());
@@ -263,7 +279,14 @@ public class ResultActivity extends AppCompatActivity {
                     what_hour += result[2];
 
                 }else if (type.equals("2")){    // 버스의 경우
-                    int interval = Integer.parseInt((String) json_object.get("interval"));
+                    int interval = 0;
+                    try {
+                        interval = Integer.parseInt((String) json_object.get("interval"));
+                    } catch (Exception e){
+                        is_route_calculateable = 0;
+                        System.out.println(e);
+                        break;
+                    }
                     String next_bus = "";
                     String next_next_bus = "";
                     int next_bus_int = -1;
@@ -337,8 +360,13 @@ public class ResultActivity extends AppCompatActivity {
                     final_json_array_element.put(json_object);
                 }
             }
-            final_json_array.put(final_json_array_element);
+            if (is_route_calculateable == 1) {
+                final_json_array.put(final_json_array_element);
+            }
         }
+        resultAdapter = new ResultAdapter(getApplicationContext(), final_json_array);
+        listView.setAdapter(resultAdapter);
+        resultAdapter.notifyDataSetChanged();
     }
 
 
@@ -362,61 +390,4 @@ public class ResultActivity extends AppCompatActivity {
         if (time_str.length() == 1) {time_str += "0"+time_str;} // 만약 오전인 경우 "06"이런형태로 저장될 수 있게함.
         return time_str;
     }
-
-    /*
-    private void jsonParsing(String jsonStrData){  // 입력으로 string 형태olp의 json을 받아 온 후 array 로 변환 후 jsonObj로 파싱해주기
-        try{
-            JSONArray jsonArr = new JSONArray(jsonStrData);
-
-            for (int i = 0; i < jsonArr.length(); i++){
-                JSONObject jsonObj = jsonArr.getJSONObject(i);
-//                System.out.println("jsonObj를 출력");
-//                System.out.println(jsonObj);
-
-                String user_id = (String)jsonObj.get("user_id");
-                String nickname = (String)jsonObj.get("nickname");
-                String title = (String)jsonObj.get("title");
-
-//                System.out.println(title);
-
-                String sub_title = (String)jsonObj.get("sub_title");
-                String contents = (String)jsonObj.get("contents");
-                String score = (String)jsonObj.get("score");
-
-                System.out.println("jsonObj 에서 data를 받아옴");
-
-                ////////////// image 도 추가해주기 //////////////
-
-                new_prev = new Preview();
-
-                new_prev.setId(user_id);
-                new_prev.setName(nickname);
-                new_prev.setTitle(title);
-                new_prev.setSubtitle(sub_title);
-                new_prev.setContent(contents);
-                new_prev.setScore(score);
-
-                System.out.println("preview 클래스에 값을 넣음");
-                System.out.println(new_prev.getTitle());
-
-                try{
-                    previewList.add(new_prev);
-                    System.out.println(previewList);
-
-                }catch(NullPointerException n){
-                    System.out.println("널 포인터...");
-                    n.printStackTrace();
-                }
-
-                previewAdapter = new PreviewAdapter(getContext(), previewList);
-                listView.setAdapter(previewAdapter);
-            }
-
-
-        }catch (JSONException e) {
-            System.out.println("json parsing 에서 오류");
-            e.printStackTrace();
-        }
-    }
-     */
 }

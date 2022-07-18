@@ -3,9 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/drawable-v24/blue_subway_background_square.xml" value="0.2335" />
+        <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/drawable-v24/gray_walk_background.xml" value="0.2335" />
+        <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/drawable-v24/green_bus_background_square.xml" value="0.2335" />
+        <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/drawable/yellow_wait_background_square.xml" value="0.2335" />
         <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/layout/activity_main.xml" value="0.5494791666666666" />
         <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/layout/activity_map.xml" value="0.41032608695652173" />
         <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/layout/activity_result.xml" value="0.26197916666666665" />
+        <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/layout/activity_superkotlin.xml" value="0.2859375" />
+        <entry key="..\:/Users/Jaejun_Han/AndroidStudioProjects/kaist_project3/reappearance01/app/src/main/res/layout/item_result.xml" value="0.28489583333333335" />
       </map>
     </option>
   </component>
