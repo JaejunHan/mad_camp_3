@@ -1,8 +1,11 @@
 package com.example.reappearance01;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -61,6 +64,7 @@ public class ResultActivity extends AppCompatActivity {
         String latitude_to = Float.toString(toLatLng.getLatitude());
         String longitude_to = Float.toString(toLatLng.getLongitude());
         request(latitude_from, longitude_from, fromName, latitude_to, longitude_to, toName);
+        Log.d(TAG,"기현주소전달"+fromName+toName+latitude_from+" "+longitude_from+" ");
         */
         request("126.8966655", "37.4830969", "출발지이름", "127.0276368", "37.4979502", "도착지이름");
         /*
