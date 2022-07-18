@@ -55,13 +55,16 @@ public class ResultActivity extends AppCompatActivity {
         String toName = intent.getStringExtra("ToName");
         // 서버와 통신하는 부분
         // 일단 위도, 경도를 하드코딩해둠.
+        /*
         String latitude_from = Float.toString(fromLatLng.getLatitude());
         String longitude_from = Float.toString(fromLatLng.getLongitude());
         String latitude_to = Float.toString(toLatLng.getLatitude());
         String longitude_to = Float.toString(toLatLng.getLongitude());
         request(latitude_from, longitude_from, fromName, latitude_to, longitude_to, toName);
-        /*
+        */
         request("126.8966655", "37.4830969", "출발지이름", "127.0276368", "37.4979502", "도착지이름");
+        /*
+
         resultAdapter = new ResultAdapter(getApplicationContext(), final_json_array);
         listView.setAdapter(resultAdapter);
         resultAdapter.notifyDataSetChanged();
@@ -368,6 +371,11 @@ public class ResultActivity extends AppCompatActivity {
                     final_json_array_element.put(json_object);
                     time_spent += Integer.parseInt(time_take);
 
+                    int[] result = calculate_hour_minutes(hour_str, minute_str, Integer.parseInt(time_take));
+                    hour_str = time_format(Integer.toString(result[0]));
+                    minute_str = time_format(Integer.toString(result[1]));
+                    what_hour += result[2];
+
                 } else {    // 그냥 하차의 경우
                     final_json_array_element.put(json_object);
                 }
@@ -376,6 +384,7 @@ public class ResultActivity extends AppCompatActivity {
                 final_json_array.put(final_json_array_element);
             }
         }
+        System.out.println(final_json_array);
         resultAdapter = new ResultAdapter(getApplicationContext(), final_json_array);
         listView.setAdapter(resultAdapter);
         resultAdapter.notifyDataSetChanged();

@@ -28,8 +28,8 @@
         <LinearLayout
             android:id="@+id/kind_of_transport"
             android:layout_width="match_parent"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <!--여기에 추가해주면됨.-->
@@ -52,14 +52,21 @@
                 android:layout_height="30dp"/>
                 -->
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/comment_content"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:id="@+id/detail_information"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Content"
-            android:paddingStart="3dp"
-            android:textSize="20sp"/>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/comment_content"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Content"
+                android:paddingStart="3dp"
+                android:textSize="20sp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
