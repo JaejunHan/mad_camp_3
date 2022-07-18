@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // intent로 다른 화면 띄위게 해주면 됨
-                Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SplashBeforeResult.class);
                 intent.putExtra("FromLatLng", ((GlobalSearchResult)getApplication()).getFromLocation());
                 intent.putExtra("FromName", ((GlobalSearchResult)getApplication()).getFromName());
                 intent.putExtra("ToLatLng", ((GlobalSearchResult)getApplication()).getToLocation());

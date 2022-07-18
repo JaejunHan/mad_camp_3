@@ -38,7 +38,7 @@ public class ResultActivity extends AppCompatActivity {
     private JSONArray final_json_array = new JSONArray();   //
     private JSONArray final_json_array_element = new JSONArray();   // 화면에 띄울 각각의 아이템
     private String type = "";
-    private String localhost = "https://72f7-210-222-224-106.jp.ngrok.io";
+
     private double walking_speed = 1.0f;
 
     SeekBar seekBar;
@@ -57,28 +57,28 @@ public class ResultActivity extends AppCompatActivity {
         speed_textview = (TextView) findViewById(R.id.speed);
         seekBar = findViewById(R.id.seekBar);
 
-
         Intent intent = getIntent();
-        LocationLatLngEntity fromLatLng = intent.getParcelableExtra("FromLatLng");
-        LocationLatLngEntity toLatLng = intent.getParcelableExtra("ToLatLng");
-        String fromName = intent.getStringExtra("FromName");
-        String toName = intent.getStringExtra("ToName");
-        // 서버와 통신하는 부분
-        // 일단 위도, 경도를 하드코딩해둠.
-        /*
-        String latitude_from = Float.toString(fromLatLng.getLatitude());
-        String longitude_from = Float.toString(fromLatLng.getLongitude());
-        String latitude_to = Float.toString(toLatLng.getLatitude());
-        String longitude_to = Float.toString(toLatLng.getLongitude());
-        request(latitude_from, longitude_from, fromName, latitude_to, longitude_to, toName);
-        */
-        request("126.8966655", "37.4830969", "출발지이름", "127.0276368", "37.4979502", "도착지이름");
+        String jsonArray = intent.getStringExtra("server_results");
+
+        try {
+            server_results = new JSONArray(jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         /*
 
         resultAdapter = new ResultAdapter(getApplicationContext(), final_json_array);
         listView.setAdapter(resultAdapter);
         resultAdapter.notifyDataSetChanged();
         */
+        try {
+            show_calculated_results(walking_speed);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -103,76 +103,7 @@ public class ResultActivity extends AppCompatActivity {
             }
         });
     }
-    public void request(String latitude_from, String longitude_from, String start, String latitude_to, String longitude_to, String end){
-        //url 요청주소 넣는 editText를 받아 url만들기
-        String url = localhost + "/path_find";
-        //JSON형식으로 데이터 통신을 진행합니다!
-        JSONObject testjson = new JSONObject();
-        try {
-            //입력해둔 edittext의 id와 pw값을 받아와 put해줍니다 : 데이터를 json형식으로 바꿔 넣어주었습니다.
-            testjson.put("latitude_from", latitude_from);
-            testjson.put("longitude_from", longitude_from);
-            testjson.put("start", start);
-            testjson.put("latitude_to", latitude_to);
-            testjson.put("longitude_to", longitude_to);
-            testjson.put("end", end);
-            String jsonString = testjson.toString(); //완성된 json 포맷
 
-            //이제 전송해볼까요?
-            final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-
-            System.out.println("zxcvasfsfasdfsdf");
-            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,testjson, new Response.Listener<JSONObject>() {
-
-                //데이터 전달을 끝내고 이제 그 응답을 받을 차례입니다.
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        System.out.println("데이터전송 성공");
-
-                        //받은 json형식의 응답을 받아
-                        JSONObject jsonObject = new JSONObject(response.toString());
-
-                        //key값에 따라 value값을 쪼개 받아옵니다.
-                        String jsonWholeArray = jsonObject.getString("jsonArray");
-                        JSONArray jsonArray = new JSONArray(jsonWholeArray);
-                        server_results = jsonArray; // 로컬 변수에 검색 결과를 저장
-                        show_calculated_results(walking_speed);
-                        //jsonParsing(jsonWholeArray);
-                        System.out.println(final_json_array);
-
-                    } catch (Exception e) {
-
-                        System.out.println("에러발생에러발생에러발생에러발생에러발생에러발생");
-                        e.printStackTrace();
-                    }
-                }
-                //서버로 데이터 전달 및 응답 받기에 실패한 경우 아래 코드가 실행됩니다.
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    System.out.println("뭔가 이상해요");
-                    error.printStackTrace();
-                    System.out.println(error);
-                    System.out.println("오아아ㅘ아ㅏ아아ㅏㅏㅇㅇㅇㅇㅇㅇㅇㅇ앙");
-                    //Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
-                @Override
-                public int getCurrentTimeout() {return 50000;}
-                @Override
-                public int getCurrentRetryCount() {return 50000;}
-                @Override
-                public void retry(VolleyError error) throws VolleyError {return;}
-            });
-            requestQueue.add(jsonObjectRequest);
-            //
-        } catch (JSONException e) {
-            System.out.println("에러발생에러발생에러발생에러발생에러발생에러발생12312312312321");
-            e.printStackTrace();
-        }
-    }
     private void show_calculated_results(double walking_speed) throws JSONException {
         Calendar cal = Calendar.getInstance();
         //출력용으로 Calendar 클래스에서 Date 클래스를 가져옵니다.

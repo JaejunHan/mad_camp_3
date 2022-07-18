@@ -37,6 +37,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key"/>
         <activity android:name=".ResultActivity" />
+        <activity android:name=".SplashBeforeResult" />
         <activity android:name=".SearchToActivity" />
 
     </application>
