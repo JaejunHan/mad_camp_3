@@ -50,11 +50,11 @@ public class SplashBeforeResult extends AppCompatActivity {
         LocationLatLngEntity ghfromLatLng = intent.getParcelableExtra("FromLatLng");
         LocationLatLngEntity ghtoLatLng = intent.getParcelableExtra("ToLatLng");
         String ghfromName = intent.getStringExtra("FromName");
-        String ghfromNameReplaced = ghfromName.replace("[","(");
-        String ghfromNameReplaced2 = ghfromNameReplaced.replace("]",")");
+        String ghfromNameReplaced = ghfromName.replace("[","");
+        String ghfromNameReplaced2 = ghfromNameReplaced.replace("]","");
         String ghtoName = intent.getStringExtra("ToName");
-        String ghtoNameReplaced = ghtoName.replace("[","(");
-        String ghtoNameReplaced2 = ghtoNameReplaced.replace("]",")");
+        String ghtoNameReplaced = ghtoName.replace("[","");
+        String ghtoNameReplaced2 = ghtoNameReplaced.replace("]","");
         // 서버와 통신하는 부분
         // 일단 위도, 경도를 하드코딩해둠.
 
@@ -64,7 +64,6 @@ public class SplashBeforeResult extends AppCompatActivity {
         String longitude_to = Float.toString(ghtoLatLng.getLongitude());
         Log.d(TAG, "기현서버리퀘스트 요청.."+latitude_from+" "+longitude_from+" "+latitude_to+" "+longitude_to+" " + ghfromNameReplaced2 + " "+ ghtoNameReplaced2);
         // request(latitude_from, longitude_from, ghfromName, latitude_to, longitude_to, ghtoName);
-        // 기현이 자슥아!! 위도 경도 바뀌었잖아!!
         request(longitude_from, latitude_from, ghfromNameReplaced2, longitude_to, latitude_to, ghtoNameReplaced2);
 
 
