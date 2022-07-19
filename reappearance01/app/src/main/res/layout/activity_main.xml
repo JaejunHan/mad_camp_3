@@ -76,6 +76,29 @@
             app:layout_constraintEnd_toStartOf="@+id/fromPlaceText"
             app:layout_constraintTop_toTopOf="@+id/imageView" />
 
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="277dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:srcCompat="@drawable/nangman" />
+
+        <ListView
+            tools:listitem="@layout/item_history_path"
+            android:id="@+id/path_searched"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
