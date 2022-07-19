@@ -72,12 +72,23 @@
             android:id="@+id/search_result"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             android:scaleType="centerInside"
             android:src="@drawable/search"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintStart_toEndOf="@+id/toPlaceText"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <ImageButton
+            android:id="@+id/switchFromAndToButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#FFFFFF"
+            android:padding="0dp"
+            android:src="@drawable/ic_baseline_import_export_24"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toStartOf="@+id/fromPlaceText"
             app:layout_constraintTop_toTopOf="@+id/imageView" />
 
 

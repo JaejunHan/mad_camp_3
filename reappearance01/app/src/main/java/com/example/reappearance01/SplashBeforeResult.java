@@ -1,9 +1,12 @@
 package com.example.reappearance01;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,21 +47,24 @@ public class SplashBeforeResult extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        LocationLatLngEntity fromLatLng = intent.getParcelableExtra("FromLatLng");
-        LocationLatLngEntity toLatLng = intent.getParcelableExtra("ToLatLng");
-        String fromName = intent.getStringExtra("FromName");
-        String toName = intent.getStringExtra("ToName");
+        LocationLatLngEntity ghfromLatLng = intent.getParcelableExtra("FromLatLng");
+        LocationLatLngEntity ghtoLatLng = intent.getParcelableExtra("ToLatLng");
+        String ghfromName = intent.getStringExtra("FromName");
+        String ghtoName = intent.getStringExtra("ToName");
         // 서버와 통신하는 부분
         // 일단 위도, 경도를 하드코딩해둠.
-        /*
-        String latitude_from = Float.toString(fromLatLng.getLatitude());
-        String longitude_from = Float.toString(fromLatLng.getLongitude());
-        String latitude_to = Float.toString(toLatLng.getLatitude());
-        String longitude_to = Float.toString(toLatLng.getLongitude());
-        request(latitude_from, longitude_from, fromName, latitude_to, longitude_to, toName);
-        */
 
-        request("126.8966655", "37.4830969", "출발지이름", "127.0276368", "37.4979502", "도착지이름");
+        String latitude_from = Float.toString(ghfromLatLng.getLatitude());
+        String longitude_from = Float.toString(ghfromLatLng.getLongitude());
+        String latitude_to = Float.toString(ghtoLatLng.getLatitude());
+        String longitude_to = Float.toString(ghtoLatLng.getLongitude());
+        Log.d(TAG, "기현서버리퀘스트 요청.."+latitude_from+" "+longitude_from+" "+latitude_to+" "+longitude_to+" " + ghfromName);
+        // request(latitude_from, longitude_from, ghfromName, latitude_to, longitude_to, ghtoName);
+        // 기현이 자슥아!! 위도 경도 바뀌었잖아!!
+        request(longitude_from, latitude_from, ghfromName, longitude_to, latitude_to, ghtoName);
+
+
+        //request("126.8966655", "37.4830969", "출발지이름", "127.0276368", "37.4979502", "도착지이름");
     }
     public void request(String latitude_from, String longitude_from, String start, String latitude_to, String longitude_to, String end){
         //url 요청주소 넣는 editText를 받아 url만들기
@@ -94,6 +100,8 @@ public class SplashBeforeResult extends AppCompatActivity {
                         String jsonWholeArray = jsonObject.getString("jsonArray");
                         JSONArray jsonArray = new JSONArray(jsonWholeArray);
                         server_results = jsonArray; // 로컬 변수에 검색 결과를 저장
+
+                        Log.d(TAG,"서버 조회 결과"+ server_results.toString());
                         Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
                         intent.putExtra("server_results", server_results.toString());
                         startActivity(intent);

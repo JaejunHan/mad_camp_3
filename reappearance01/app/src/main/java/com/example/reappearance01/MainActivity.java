@@ -1,5 +1,7 @@
 package com.example.reappearance01;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,10 +46,40 @@ public class MainActivity extends AppCompatActivity {
     ImageButton search;
     SearchResultEntity searchFromResult;
     SearchResultEntity searchToResult;
+    ArrayList<PathSavedData> read_data = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        String dirPath = getFilesDir().getAbsolutePath();
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+            Log.d(TAG, "없어서 디렉토리 만들었음요"+dirPath);
+        }
+        File file = new File(dir, "/trackSearchList.txt");
+        try {
+            file.createNewFile();
+            Log.d(TAG, "read_data 생성은 됨");
+        }catch(Exception e){
+            Log.e(TAG, "read_data 생성도 안돼요.");
+        }
+        String testStr = "ABCDEFGHIJK...";
+        try{
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(testStr.getBytes());
+            fos.close();
+            Log.d(TAG, "teststr쓰임,"+file);
+            //ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+            //read_data = (ArrayList<PathSavedData>)ois.readObject();
+            //Log.d(TAG, "read_data 띄워줄게. "+read_data.toString());
+            //ois.close();
+        }catch (Exception ex) {
+            Log.e(TAG, "read_data 없는데요?");
+        }
 
         Intent intent = getIntent();
         if (intent.hasExtra("SearchFromData")) {
@@ -61,6 +99,26 @@ public class MainActivity extends AppCompatActivity {
         binding.fromPlaceText.setText(((GlobalSearchResult)getApplication()).getFromName());
         binding.toPlaceText.setText(((GlobalSearchResult)getApplication()).getToName());
 
+        binding.switchFromAndToButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String bufFromName = ((GlobalSearchResult)getApplication()).getFromName();
+                String bufFromFullAddress = ((GlobalSearchResult)getApplication()).getFromFullAddress();
+                LocationLatLngEntity bufFromLocationLatLng = ((GlobalSearchResult)getApplication()).getFromLocation();
+                ((GlobalSearchResult)getApplication()).setFromName(((GlobalSearchResult)getApplication()).getToName());
+                ((GlobalSearchResult)getApplication()).setFromFullAddress(((GlobalSearchResult)getApplication()).getToFullAddress());
+                ((GlobalSearchResult)getApplication()).setFromLocation(((GlobalSearchResult)getApplication()).getToLocation());
+                ((GlobalSearchResult)getApplication()).setToName(bufFromName);
+                ((GlobalSearchResult)getApplication()).setToFullAddress(bufFromFullAddress);
+                ((GlobalSearchResult)getApplication()).setToLocation(bufFromLocationLatLng);
+                binding.fromPlaceText.setText(((GlobalSearchResult)getApplication()).getFromName());
+                binding.toPlaceText.setText(((GlobalSearchResult)getApplication()).getToName());
+
+            }
+        });
+
+
+
         init();
         
         search = (ImageButton) findViewById(R.id.search_result);
@@ -75,6 +133,27 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("FromName", ((GlobalSearchResult)getApplication()).getFromName());
                 intent.putExtra("ToLatLng", ((GlobalSearchResult)getApplication()).getToLocation());
                 intent.putExtra("ToName", ((GlobalSearchResult)getApplication()).getToName());
+                PathSavedData pathSavedDataToAdd = new PathSavedData(
+                        ((GlobalSearchResult)getApplication()).getFromName(),
+                        ((GlobalSearchResult)getApplication()).getFromFullAddress(),
+                        ((GlobalSearchResult)getApplication()).getFromLocation(),
+                        ((GlobalSearchResult)getApplication()).getToName(),
+                        ((GlobalSearchResult)getApplication()).getToFullAddress(),
+                        ((GlobalSearchResult)getApplication()).getToLocation()
+                );
+                read_data.add(pathSavedDataToAdd);
+                String dirPath = getFilesDir().getAbsolutePath();
+                File dir = new File(dirPath);
+                File filex = new File(dir, "/trackSearchList.ser");
+                try{
+                    FileOutputStream fosnew = new FileOutputStream(filex);
+                    ObjectOutputStream oos = new ObjectOutputStream(fosnew);
+                    oos.writeObject(read_data);
+                    Log.d(TAG, "read_data 띄워줄게. "+read_data.toString());
+                    oos.close();
+                } catch (Exception ex) {
+                    Log.d(TAG, "read_data 또 없어요."+read_data.toString());
+                }
                 startActivity(intent);
             }
         });
