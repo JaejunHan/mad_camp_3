@@ -8,3 +8,5 @@ data class LocationLatLngEntity(
     val latitude: Float,
     val longitude: Float
 ) : Parcelable
+
+

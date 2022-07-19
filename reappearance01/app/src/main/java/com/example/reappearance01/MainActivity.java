@@ -169,18 +169,34 @@ public class MainActivity extends AppCompatActivity {
                         ((GlobalSearchResult)getApplication()).getToLocation()
                 );
                 read_data.add(pathSavedDataToAdd);
-                String dirPath = getFilesDir().getAbsolutePath();
-                File dir = new File(dirPath);
-                File filex = new File(dir, "/trackSearchList.ser");
-                try{
-                    FileOutputStream fosnew = new FileOutputStream(filex);
-                    ObjectOutputStream oos = new ObjectOutputStream(fosnew);
-                    oos.writeObject(read_data);
-                    Log.d(TAG, "read_data 띄워줄게. "+read_data.toString());
-                    oos.close();
-                } catch (Exception ex) {
-                    Log.d(TAG, "read_data 또 없어요."+read_data.toString());
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("FromName", ((GlobalSearchResult)getApplication()).getFromName());
+                    json.put("FromFullAddress", ((GlobalSearchResult)getApplication()).getFromFullAddress());
+                    json.put("FromLatitude", ((GlobalSearchResult)getApplication()).getFromLocation().getLatitude());
+                    json.put("FromLongitude", ((GlobalSearchResult)getApplication()).getFromLocation().getLongitude());
+                    json.put("ToName", ((GlobalSearchResult)getApplication()).getToName());
+                    json.put("ToFullAddress", ((GlobalSearchResult)getApplication()).getToFullAddress());
+                    json.put("ToLatitude", ((GlobalSearchResult)getApplication()).getToLocation().getLatitude());
+                    json.put("ToLongitude", ((GlobalSearchResult)getApplication()).getToLocation().getLongitude());
+                    path_searched.put(json);
+                    WritetoJson(path_searched);
+                    Log.d(TAG, "기현 path_searched write됨"+path_searched.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                /*
+        JSONObject json = new JSONObject();
+        try {
+            json.put("hello", "hi");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonArray.put(json);
+        WritetoJson(jsonArray);
+        System.out.println("여기여열어렁러얼얼어ㅓ");
+        System.out.println(getJsonString());
+         */
                 startActivity(intent);
             }
         });
