@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private JSONArray path_searched = new JSONArray();
     private ArrayList<PathSavedData> path_searched_arraylist = new ArrayList<>();
+    private HistoryPathAdapter oAdapter = new HistoryPathAdapter(path_searched_arraylist);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 PathSavedData thisdata = new PathSavedData(fromName, fromFullAddress, fromLocation, toName, toFullAddress, toLocation);
                 path_searched_arraylist.add(thisdata);
             }
-            HistoryPathAdapter oAdapter = new HistoryPathAdapter(path_searched_arraylist);
+            oAdapter = new HistoryPathAdapter(path_searched_arraylist);
             oAdapter.notifyDataSetChanged();
             binding.pathSearched.setAdapter(oAdapter);
         } catch (JSONException e) {
@@ -193,6 +194,17 @@ public class MainActivity extends AppCompatActivity {
                         ((GlobalSearchResult)getApplication()).getToFullAddress(),
                         ((GlobalSearchResult)getApplication()).getToLocation()
                 );
+                String fromName = ((GlobalSearchResult)getApplication()).getFromName();
+                String fromFullAddress = ((GlobalSearchResult)getApplication()).getFromFullAddress();
+                String fromLatitude = Float.toString(((GlobalSearchResult)getApplication()).getFromLocation().getLatitude());
+                String fromLongitude = Float.toString(((GlobalSearchResult)getApplication()).getFromLocation().getLongitude());
+                String toName = ((GlobalSearchResult)getApplication()).getToName();
+                String toFullAddress = ((GlobalSearchResult)getApplication()).getToFullAddress();
+                String toLatitude = Float.toString(((GlobalSearchResult)getApplication()).getToLocation().getLatitude());
+                String toLongitude = Float.toString(((GlobalSearchResult)getApplication()).getToLocation().getLongitude());
+                LocationLatLngEntity fromLocation = new LocationLatLngEntity(Float.parseFloat(fromLatitude),Float.parseFloat(fromLongitude));
+                LocationLatLngEntity toLocation = new LocationLatLngEntity(Float.parseFloat(toLatitude),Float.parseFloat(toLongitude));
+
                 read_data.add(pathSavedDataToAdd);
                 JSONObject json = new JSONObject();
                 try {
@@ -206,10 +218,16 @@ public class MainActivity extends AppCompatActivity {
                     json.put("ToLongitude", ((GlobalSearchResult)getApplication()).getToLocation().getLongitude());
                     path_searched.put(json);
                     WritetoJson(path_searched);
+
+                    PathSavedData thisdata = new PathSavedData(fromName, fromFullAddress, fromLocation, toName, toFullAddress, toLocation);
+                    path_searched_arraylist.add(thisdata);
                     Log.d(TAG, "기현 path_searched write됨"+path_searched.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                oAdapter = new HistoryPathAdapter(path_searched_arraylist);
+                oAdapter.notifyDataSetChanged();
+                binding.pathSearched.setAdapter(oAdapter);
                 /*
         JSONObject json = new JSONObject();
         try {
