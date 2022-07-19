@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             if (result.getResultCode() == 9001) {
                 Intent intent = result.getData();
 
-                binding.textView4.setText("hey");
+
 
             }
         });
