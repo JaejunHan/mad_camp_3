@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -30,9 +31,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
@@ -47,13 +51,36 @@ public class MainActivity extends AppCompatActivity {
     SearchResultEntity searchFromResult;
     SearchResultEntity searchToResult;
     ArrayList<PathSavedData> read_data = new ArrayList<>();
+
+    private JSONArray path_searched = new JSONArray();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // 바로 밑에 주석 코드식으로 사용하면 됨.
 
-
+        /*
+        JSONObject json = new JSONObject();
+        try {
+            json.put("hello", "hi");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonArray.put(json);
+        WritetoJson(jsonArray);
+        System.out.println("여기여열어렁러얼얼어ㅓ");
+        System.out.println(getJsonString());
+         */
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+
+        // 경로 읽어오기
+        try {
+            path_searched = new JSONArray(getJsonString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         String dirPath = getFilesDir().getAbsolutePath();
         File dir = new File(dirPath);
         if (!dir.exists()) {
@@ -182,6 +209,32 @@ public class MainActivity extends AppCompatActivity {
             activityResultLauncher.launch(intent);
         });
 
+    }
+    private String getJsonString()
+    {
+        String json = "";
+
+        try {
+            FileInputStream fis = openFileInput("path_searched.json");
+            DataInputStream dis = new DataInputStream(fis);
+            json = dis.readUTF();
+            dis.close();
+        }
+        catch (IOException ex) {ex.printStackTrace();}
+        return json;
+    }
+
+    private void WritetoJson(JSONArray jsonArray) {
+        try {
+            FileOutputStream fos = openFileOutput("path_searched.json", Context.MODE_PRIVATE);
+            DataOutputStream dos = new DataOutputStream(fos);
+            Log.i("save", jsonArray.toString());
+            dos.writeUTF(jsonArray.toString());
+            dos.flush();
+            dos.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }
