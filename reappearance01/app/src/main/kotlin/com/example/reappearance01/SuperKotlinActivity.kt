@@ -82,11 +82,6 @@ class SuperKotlinActivity: AppCompatActivity(), CoroutineScope {
         }
     }
 
-
-
-
-
-
     private fun getMyLocation() {
         // 위치 매니저 초기화
         if (::locationManager.isInitialized.not()) {
