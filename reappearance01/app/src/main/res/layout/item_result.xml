@@ -21,7 +21,30 @@
                 android:paddingStart="3dp"
                 android:paddingTop="20dp"
                 android:paddingBottom="2dp"
+                android:textColor="@color/blue"
                 android:textSize="30sp"/>
+            <TextView
+                android:layout_marginLeft="80dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="도착 예정 시각: "
+                android:paddingStart="3dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="2dp"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/arrival_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="오후 07시 25분"
+                android:paddingStart="3dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="2dp"
+                android:textSize="15sp"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
