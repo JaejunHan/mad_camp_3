@@ -50,7 +50,11 @@ public class SplashBeforeResult extends AppCompatActivity {
         LocationLatLngEntity ghfromLatLng = intent.getParcelableExtra("FromLatLng");
         LocationLatLngEntity ghtoLatLng = intent.getParcelableExtra("ToLatLng");
         String ghfromName = intent.getStringExtra("FromName");
+        String ghfromNameReplaced = ghfromName.replace("[","(");
+        String ghfromNameReplaced2 = ghfromNameReplaced.replace("]",")");
         String ghtoName = intent.getStringExtra("ToName");
+        String ghtoNameReplaced = ghtoName.replace("[","(");
+        String ghtoNameReplaced2 = ghtoNameReplaced.replace("]",")");
         // 서버와 통신하는 부분
         // 일단 위도, 경도를 하드코딩해둠.
 
@@ -58,10 +62,10 @@ public class SplashBeforeResult extends AppCompatActivity {
         String longitude_from = Float.toString(ghfromLatLng.getLongitude());
         String latitude_to = Float.toString(ghtoLatLng.getLatitude());
         String longitude_to = Float.toString(ghtoLatLng.getLongitude());
-        Log.d(TAG, "기현서버리퀘스트 요청.."+latitude_from+" "+longitude_from+" "+latitude_to+" "+longitude_to+" " + ghfromName);
+        Log.d(TAG, "기현서버리퀘스트 요청.."+latitude_from+" "+longitude_from+" "+latitude_to+" "+longitude_to+" " + ghfromNameReplaced2 + " "+ ghtoNameReplaced2);
         // request(latitude_from, longitude_from, ghfromName, latitude_to, longitude_to, ghtoName);
         // 기현이 자슥아!! 위도 경도 바뀌었잖아!!
-        request(longitude_from, latitude_from, ghfromName, longitude_to, latitude_to, ghtoName);
+        request(longitude_from, latitude_from, ghfromNameReplaced2, longitude_to, latitude_to, ghtoNameReplaced2);
 
 
         //request("126.8966655", "37.4830969", "출발지이름", "127.0276368", "37.4979502", "도착지이름");
@@ -124,9 +128,9 @@ public class SplashBeforeResult extends AppCompatActivity {
             });
             jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
                 @Override
-                public int getCurrentTimeout() {return 50000;}
+                public int getCurrentTimeout() {return 50000000;}
                 @Override
-                public int getCurrentRetryCount() {return 50000;}
+                public int getCurrentRetryCount() {return 50000000;}
                 @Override
                 public void retry(VolleyError error) throws VolleyError {return;}
             });
