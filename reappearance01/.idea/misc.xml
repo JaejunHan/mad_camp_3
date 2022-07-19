@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/kaist_project_3/reappearance01/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/kaist_project_3/reappearance01/app/src/main/res/layout/activity_selectfrommap.xml" value="0.358695652173913" />
+        <entry key="..\:/kaist_project_3/reappearance01/app/src/main/res/layout/item_history_location.xml" value="0.358695652173913" />
         <entry key="..\:/kaist_project_3/reappearance01/app/src/main/res/layout/item_history_path.xml" value="0.358695652173913" />
         <entry key="..\:/kaist_project_3/reappearance01/app/src/main/res/layout/item_result.xml" value="0.358695652173913" />
         <entry key="..\:/kaist_project_3/reappearance01/app/src/main/res/layout/viewholder_search_result_item.xml" value="0.358695652173913" />

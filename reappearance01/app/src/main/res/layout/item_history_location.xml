@@ -6,10 +6,10 @@
     <ImageView
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:layout_width="84dp"
-        android:layout_height="59dp"
+        android:layout_width="35dp"
+        android:layout_height="30dp"
         android:scaleType="centerInside"
-        android:src="@drawable/bus" />
+        android:src="@drawable/location" />
     <LinearLayout
         android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
@@ -19,15 +19,8 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="From: 대전 유성구 구성동 400"
+            android:text="대전 유성구 구성동 400"
             android:textColor="@color/black"
-            android:gravity="center"/>
-        <TextView
-            android:textColor="@color/black"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To: 팬텀팬피그 궁동점"
             android:gravity="center"/>
     </LinearLayout>>
 
