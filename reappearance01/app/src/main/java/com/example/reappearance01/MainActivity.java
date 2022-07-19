@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.reappearance01.databinding.ActivityMainBinding;
@@ -52,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
     SearchResultEntity searchToResult;
     ArrayList<PathSavedData> read_data = new ArrayList<>();
 
-    private JSONArray path_searched = new JSONArray();
+    private ListView m_oListView = null;
 
+    private JSONArray path_searched = new JSONArray();
+    private ArrayList<PathSavedData> path_searched_arraylist = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -77,6 +80,24 @@ public class MainActivity extends AppCompatActivity {
         // 경로 읽어오기
         try {
             path_searched = new JSONArray(getJsonString());
+            for (int i=0; i<path_searched.length();i++) {
+                JSONObject thisone = new JSONObject(path_searched.get(i).toString());
+                String fromName = thisone.get("FromName").toString();
+                String fromFullAddress = thisone.get("FromFullAddress").toString();
+                String fromLatitude = thisone.get("FromLatitude").toString();
+                String fromLongitude = thisone.get("FromLongitude").toString();
+                String toName = thisone.get("ToName").toString();
+                String toFullAddress = thisone.get("ToFullAddress").toString();
+                String toLatitude = thisone.get("ToLatitude").toString();
+                String toLongitude = thisone.get("ToLongitude").toString();
+                LocationLatLngEntity fromLocation = new LocationLatLngEntity(Float.parseFloat(fromLatitude),Float.parseFloat(fromLongitude));
+                LocationLatLngEntity toLocation = new LocationLatLngEntity(Float.parseFloat(toLatitude),Float.parseFloat(toLongitude));
+                PathSavedData thisdata = new PathSavedData(fromName, fromFullAddress, fromLocation, toName, toFullAddress, toLocation);
+                path_searched_arraylist.add(thisdata);
+            }
+            HistoryPathAdapter oAdapter = new HistoryPathAdapter(path_searched_arraylist);
+            oAdapter.notifyDataSetChanged();
+            binding.pathSearched.setAdapter(oAdapter);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -123,9 +144,12 @@ public class MainActivity extends AppCompatActivity {
             ((GlobalSearchResult)getApplication()).setToFullAddress(searchToResult.getFullAddress());
             ((GlobalSearchResult)getApplication()).setToLocation(searchToResult.getLocationLatLng());
         }
-        binding.fromPlaceText.setText(((GlobalSearchResult)getApplication()).getFromName());
-        binding.toPlaceText.setText(((GlobalSearchResult)getApplication()).getToName());
-
+        if (!(((GlobalSearchResult)getApplication()).getFromName()==null)) {
+            binding.fromPlaceText.setText(((GlobalSearchResult) getApplication()).getFromName());
+        }
+        if (!(((GlobalSearchResult)getApplication()).getToName()==null)) {
+            binding.toPlaceText.setText(((GlobalSearchResult) getApplication()).getToName());
+        }
         binding.switchFromAndToButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
 
 
@@ -200,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     private void init() {
