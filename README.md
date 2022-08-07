@@ -1,52 +1,41 @@
 # 낭만
 
 ## 프로젝트 발표 영상
-
-[https://youtu.be/DOa-98J7_3o](https://youtu.be/DOa-98J7_3o)
+| Youtube Video |
+|:----:|
+|[![Video Label](https://youtu.be/DOa-98J7_3o)](https://youtu.be/DOa-98J7_3o)|
 
 ## 프로젝트 소개
 
-  낭만 어플리케이션은 네이버 및 카카오 지도를 개선한 대중교통 길찾기 시스템이다. 현재 네이버 및 카카오 지도에서 제공하는 길찾기 시스템은 버스 및 지하철의 **탑승 시간만**을 고려해 경로를 보여준다. 하지만 배차 간격이 긴 대중교통의 경우, 네이버 및 카카오에서 제시한 **예상 시간과 실제 걸리는 시간이 차이**가 많이 난다. 이 부분에 대해서 네이버 및 카카오에서는 현재 시간을 기준으로 다음 버스, 다다음 버스가 몇분 뒤에 도착할지에 대해 알려주지만, 노선에 환승이 있을 경우 환승 후 얼마나 기다려야 될지에 대한 정보는 제공해주지 않는다. 즉, 사용자가 직접 판단하거나 운에 맡기며 대중교통을 탑승하는 경우가 많다.
+  &nbsp; 낭만 어플리케이션은 네이버 및 카카오 지도를 개선한 대중교통 길찾기 시스템이다. 현재 네이버 및 카카오 지도에서 제공하는 길찾기 시스템은 버스 및 지하철의 **탑승 시간만**을 고려해 경로를 보여준다. 하지만 배차 간격이 긴 대중교통의 경우, 네이버 및 카카오에서 제시한 **예상 시간과 실제 걸리는 시간이 차이**가 많이 난다. 이 부분에 대해서 네이버 및 카카오에서는 현재 시간을 기준으로 다음 버스, 다다음 버스가 몇분 뒤에 도착할지에 대해 알려주지만, 노선에 환승이 있을 경우 환승 후 얼마나 기다려야 될지에 대한 정보는 제공해주지 않는다. 즉, 사용자가 직접 판단하거나 운에 맡기며 대중교통을 탑승하는 경우가 많다.
 
-  낭만 어플리케이션은 이 문제점을 해결하기 위해 개발되었다. 서버 컴퓨터에서 네이버 지도를 실행하여 대중교통 노선을 찾기 위한 **빅데이터를 수집**하고, 이를 이용하여 대중교통의 **“대기시간”을 포함한 실제 시간**을 계산하여 준다. 또한, **뛰어가기 모드**도 있어, 사용자가 대중교통 정류장까지 뛰어갔을 경우 대중교통에 탑승할 수 있는지도 계산하여준다.
+  &nbsp; 낭만 어플리케이션은 이 문제점을 해결하기 위해 개발되었다. 서버 컴퓨터에서 네이버 지도를 실행하여 대중교통 노선을 찾기 위한 **빅데이터를 수집**하고, 이를 이용하여 대중교통의 **“대기시간”을 포함한 실제 시간**을 계산하여 준다. 또한, **뛰어가기 모드**도 있어, 사용자가 대중교통 정류장까지 뛰어갔을 경우 대중교통에 탑승할 수 있는지도 계산하여준다.
 
 ## APP 실행 화면 및 설명
 
-### APP 아이콘, 실행시 스플래쉬 이미지
+| APP 아이콘 | 실행시 스플래쉬 이미지 |
+|:----:|:----:|
+|<img src="/images/app_icon.jpg" width=450 > |<img src="/images/app_splash_image.jpg" width=450 > |
 
-![app_icon.jpg](images/app_icon.jpg)
 
-![app_splash_image.jpg](images/app_splash_image.jpg)
-
-### APP 메인 화면, 출발지 or 도착지 입력 시 화면, 지도에서 검색 시 화면
-
-![Screenshot_20220719-204954_NANGMAN.jpg](images/Screenshot_20220719-204954_NANGMAN.jpg)
-
-![Screenshot_20220719-204951_NANGMAN.jpg](images/Screenshot_20220719-204951_NANGMAN.jpg)
-
-![Screenshot_20220719-204940_NANGMAN.jpg](images/Screenshot_20220719-204940_NANGMAN.jpg)
-
+| APP 메인 화면 | 출발지 or 도착지 입력 시 화면 | 지도에서 검색 시 화면 |
+|:----:|:----:|:----:|
+|<img src="/images/Screenshot_20220719-204954_NANGMAN.jpg" width=300 > |<img src="/images/Screenshot_20220719-204951_NANGMAN.jpg" width=300 > |<img src="/images/Screenshot_20220719-204940_NANGMAN.jpg" width=300 >|
 - 출발지/도착지 입력시 관련 검색어를 클릭.(해당 위치의 위도 경도, 반환)
 - 지도에서 검색 시 해당 위치의 위도, 경도를 반환함.
 - 위도, 경도 좌표 값을 얻기 위해 Google Map API 사용.
 - 메인 화면에서 검색한 경로는 Fileinputstream, Fileoutputstream을 사용하여 json파일로 저장
 
-### 대중교통 경로 검색 시 나오는 스플래쉬 비디오
 
-![splash_1.jpg](images/splash_1.jpg)
-
-![splash_2.jpg](images/splash_2.jpg)
-
-![splash_3.jpg](images/splash_3.jpg)
-
+| | 대중교통 경로 검색 시 나오는 스플래쉬 비디오 | |
+|:----:|:----:|:----:|
+|<img src="/images/splash_1.jpg" width=300 > |<img src="/images/splash_2.jpg" width=300 > |<img src="/images/splash_3.jpg" width=300 >|
 - 빅데이터를 수집할 시 데이터 수집하는 서버 컴퓨터의 화면을 videoview로 보여줌.
 
-### 대중교통 길찾기 결과, 달리기 모드(2.5배속)으로 전환 시 화면
 
-![Screenshot_20220719-223820_Gallery.jpg](images/Screenshot_20220719-223820_Gallery.jpg)
-
-![Screenshot_20220719-223753_Gallery.jpg](images/Screenshot_20220719-223753_Gallery.jpg)
-
+| 대중교통 길찾기 결과 | 달리기 모드(2.5배속)으로 전환 시 화면 |
+|:----:|:----:|
+|<img src="/images/Screenshot_20220719-223820_Gallery.jpg" width=450 > |<img src="/images/Screenshot_20220719-223753_Gallery.jpg" width=450 > |
 - 검색 결과를 대중교통 이용시간, 대기시간, 도보 등을 바 그래프로 보여줌
 - 각각의 바 그래프는 시간에 비례하여 길이를 설정함.
 - 바 및 설명은 dynamic programming을 통해 구현
